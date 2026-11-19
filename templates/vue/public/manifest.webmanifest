@@ -1,0 +1,11 @@
+{
+  "name": "My dg.run app",
+  "short_name": "dg app",
+  "description": "A small app on dg.run with sign-in and a database.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
