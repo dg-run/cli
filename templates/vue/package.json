@@ -11,7 +11,7 @@
     "pack": "npm run build && node scripts/pack.mjs"
   },
   "dependencies": {
-    "@dgrun/client": "^0.1.0",
+    "@dgrun/client": "^0.2.0",
     "vue": "^3.5.0"
   },
   "devDependencies": {
@@ -20,5 +20,9 @@
     "typescript": "^5.9.3",
     "vite": "^7.0.0",
     "vue-tsc": "^3.0.0"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@^4.68.0",
+    "esbuild": "npm:esbuild-wasm@^0.28.0"
   }
 }

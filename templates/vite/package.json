@@ -11,11 +11,15 @@
     "pack": "npm run build && node scripts/pack.mjs"
   },
   "dependencies": {
-    "@dgrun/client": "^0.1.0"
+    "@dgrun/client": "^0.2.0"
   },
   "devDependencies": {
     "fflate": "^0.8.3",
     "typescript": "^5.9.3",
     "vite": "^7.0.0"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@^4.68.0",
+    "esbuild": "npm:esbuild-wasm@^0.28.0"
   }
 }

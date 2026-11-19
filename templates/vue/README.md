@@ -19,6 +19,12 @@ npm run pack     # type-checks, builds, and writes <name>.zip
 
 Upload the zip in **My apps** on dg.run. It gets a private sandbox address to test on, and you submit it for review when you are happy. See [Getting started](https://dg.run/docs/getting-started).
 
+## If the build is blocked on Windows
+
+Some Windows machines run an Application Control policy (Smart App Control, WDAC) that refuses to load unsigned native files, which breaks `vite build` with `An Application Control policy has blocked this file ... rollup.win32-x64-msvc.node`. This template already avoids it: `package.json` has an `overrides` block that swaps Rollup and esbuild for their WebAssembly builds, which need no native files.
+
+On a machine without that restriction you can delete the `overrides` block and run `npm install` again for the native (somewhat faster) builds.
+
 ## Where things are
 
 | File | What it does |
