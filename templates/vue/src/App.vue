@@ -26,7 +26,7 @@ function signIn() {
 <template>
   <main>
     <h1>My dg.run app</h1>
-    <p class="sub">Vue + @dgrun/client: sign in and keep private notes, with no server of your own.</p>
+    <p class="sub">Vue + dgclient: sign in and keep private notes, with no server of your own.</p>
 
     <p v-if="!ready" class="status">Loading…</p>
 

@@ -1,6 +1,6 @@
 # Vue + dg.run
 
-A minimal Vue 3 + TypeScript app that uses [`@dgrun/client`](https://www.npmjs.com/package/@dgrun/client): sign in with dg and keep private notes in the built-in database, with live updates across tabs. There is no server of your own to write or run.
+A minimal Vue 3 + TypeScript app that uses [`dgclient`](https://www.npmjs.com/package/dgclient): sign in with dg and keep private notes in the built-in database, with live updates across tabs. There is no server of your own to write or run.
 
 ## Run it
 
@@ -39,5 +39,5 @@ On a machine without that restriction you can delete the `overrides` block and r
 ## Next steps
 
 - Make the collection shared: `dg.db.collection<Note>('notes', 'public')` (everyone can read, only the creator changes).
-- Rules per collection, remote config, logs and subscriptions are all on the same `dg` client. See the [client docs](https://www.npmjs.com/package/@dgrun/client).
+- Rules per collection, remote config, logs and subscriptions are all on the same `dg` client. See the [client docs](https://www.npmjs.com/package/dgclient).
 - Change the manifest's `name` and replace `public/favicon.svg` with your own icon.

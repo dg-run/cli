@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
-import type { DgError, Doc } from '@dgrun/client'
+import type { DgError, Doc } from 'dgclient'
 import { dg, notes, type Note } from './dg'
 
 /** The signed-in user (or null). Re-renders on sign-in, sign-out, and when the server ends the session. */

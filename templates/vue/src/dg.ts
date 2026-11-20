@@ -1,4 +1,4 @@
-import { createDg, type Collection } from '@dgrun/client'
+import { createDg, type Collection } from 'dgclient'
 
 /** The shape of what this app stores. The client checks every put, patch and query against it. */
 export interface Note {

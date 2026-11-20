@@ -1,4 +1,4 @@
-import type { DgError, Doc, DgUser } from '@dgrun/client'
+import type { DgError, Doc, DgUser } from 'dgclient'
 import { dg, notes, type Note } from './dg'
 
 /** A readable message for any error the client throws (every failed call is a `DgError` with a typed `code`). */
@@ -50,7 +50,7 @@ export class NotesApp {
     }
     this.root.replaceChildren(el('main', {},
       el('h1', {}, 'My dg.run app'),
-      el('p', { className: 'sub' }, 'Vite + @dgrun/client: sign in and keep private notes, with no server of your own.'),
+      el('p', { className: 'sub' }, 'Vite + dgclient: sign in and keep private notes, with no server of your own.'),
       this.status, this.bar, this.form, this.list, this.empty, this.hint, this.errorBox,
     ))
   }

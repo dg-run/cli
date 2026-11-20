@@ -23,7 +23,7 @@ export default function App() {
   return (
     <main>
       <h1>My dg.run app</h1>
-      <p className="sub">React + @dgrun/client: sign in and keep private notes, with no server of your own.</p>
+      <p className="sub">React + dgclient: sign in and keep private notes, with no server of your own.</p>
 
       {!ready ? (
         <p className="status">Loading…</p>

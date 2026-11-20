@@ -1,5 +1,5 @@
 import { computed, onScopeDispose, ref, shallowRef, watch } from 'vue'
-import type { DgError, Doc } from '@dgrun/client'
+import type { DgError, Doc } from 'dgclient'
 import { dg, notes, type Note } from './dg'
 
 /** A readable message for any error the client throws (every failed call is a `DgError` with a typed `code`). */

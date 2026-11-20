@@ -4,3 +4,5 @@ dist
 *.local
 *.tsbuildinfo
 .DS_Store
+# your dev sandbox link (made by create-dg, belongs to your account)
+.dg

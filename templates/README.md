@@ -1,6 +1,6 @@
 # Templates
 
-Starting points for apps on [dg.run](https://dg.run). Each folder is a complete, minimal project that already uses [`@dgrun/client`](../client): sign in and a private notes list with live updates.
+Starting points for apps on [dg.run](https://dg.run). Each folder is a complete, minimal project that already uses [`dgclient`](../client): sign in and a private notes list with live updates.
 
 | Template | Stack |
 |---|---|
@@ -22,11 +22,11 @@ Add a folder here with its own `package.json`, a `build`/`pack` script that prod
 
 ## Working on the templates in this repo
 
-They depend on the published `@dgrun/client`. To try them against your local copy before it is published:
+They depend on the published `dgclient`. To try them against your local copy before it is published:
 
 ```bash
-cd client && npm install && npm pack          # makes dgrun-client-<version>.tgz
+cd client && npm install && npm pack          # makes dgclient-<version>.tgz
 cd ../templates/react
-npm install ../../client/dgrun-client-*.tgz
+npm install ../../client/dgclient-*.tgz
 npm run pack
 ```
