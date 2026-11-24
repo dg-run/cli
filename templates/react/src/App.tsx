@@ -1,23 +1,30 @@
 import { useState, type FormEvent } from 'react'
-import { dg, notes } from './dg'
-import { errorText, useNotes, useReady, useUser } from './hooks'
+import { useCollection, useUser } from 'dgclient/react'
+import { notes } from './dg'
+import { errorText } from './errors'
 
 export default function App() {
-  const ready = useReady()
-  const user = useUser()
-  const { items, error, setError, reload } = useNotes(user?.id)
+  // `ready` is false until the client has finished a sign-in redirect or restored the saved session.
+  const { user, ready, signIn, signOut } = useUser()
+  // A list that stays fresh (live updates over a WebSocket, a poll when there is none) with writes that refresh it.
+  // It only loads while somebody is signed in, and starts over when the user changes.
+  const { items, error: listError, put, remove } = useCollection(notes, { orderBy: 'createdAt', desc: true })
   const [text, setText] = useState('')
+  const [actionError, setActionError] = useState('')
+  const error = actionError || (listError ? errorText(listError) : '')
 
   async function add(e: FormEvent) {
     e.preventDefault()
     const value = text.trim()
     if (!value) return
     setText('')
-    try { await notes.put({ text: value }); await reload() } catch (err) { setError(errorText(err)) }
+    setActionError('')
+    try { await put({ text: value }) } catch (err) { setActionError(errorText(err)) }
   }
 
-  async function remove(key: string) {
-    try { await notes.delete(key); await reload() } catch (err) { setError(errorText(err)) }
+  async function del(key: string) {
+    setActionError('')
+    try { await remove(key) } catch (err) { setActionError(errorText(err)) }
   }
 
   return (
@@ -30,13 +37,13 @@ export default function App() {
       ) : !user ? (
         <div className="bar">
           <span>Sign in to keep notes.</span>
-          <button className="primary" onClick={() => dg.signIn().catch((e) => setError(errorText(e)))}>Sign in with dg</button>
+          <button className="primary" onClick={() => signIn().catch((e) => setActionError(errorText(e)))}>Sign in with dg</button>
         </div>
       ) : (
         <>
           <div className="bar">
             <span>Signed in as {user.email}</span>
-            <button onClick={() => void dg.signOut()}>Sign out</button>
+            <button onClick={() => void signOut()}>Sign out</button>
           </div>
 
           <form onSubmit={add}>
@@ -51,7 +58,7 @@ export default function App() {
               {items.map((n) => (
                 <li key={n.key}>
                   <span>{n.data.text}</span>
-                  <button onClick={() => void remove(n.key)} aria-label={`Delete note: ${n.data.text}`}>Delete</button>
+                  <button onClick={() => void del(n.key)} aria-label={`Delete note: ${n.data.text}`}>Delete</button>
                 </li>
               ))}
             </ul>

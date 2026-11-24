@@ -1,25 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { dg, notes } from './dg'
-import { errorText, useNotes, useUser } from './composables'
+import { computed, ref } from 'vue'
+import { useCollection, useUser } from 'dgclient/vue'
+import { notes } from './dg'
+import { errorText } from './errors'
 
-const { user, ready, userId } = useUser()
-const { items, error, reload } = useNotes(userId)
+// `ready` is false until the client has finished a sign-in redirect or restored the saved session.
+const { user, ready, signIn, signOut } = useUser()
+// A list that stays fresh (live updates over a WebSocket, a poll when there is none) with writes that refresh it.
+// It only loads while somebody is signed in, and starts over when the user changes.
+const { items, error: listError, put, remove } = useCollection(notes, { orderBy: 'createdAt', desc: true })
 const text = ref('')
+const actionError = ref('')
+const error = computed(() => actionError.value || (listError.value ? errorText(listError.value) : ''))
 
 async function add() {
   const value = text.value.trim()
   if (!value) return
   text.value = ''
-  try { await notes.put({ text: value }); await reload() } catch (e) { error.value = errorText(e) }
+  actionError.value = ''
+  try { await put({ text: value }) } catch (e) { actionError.value = errorText(e) }
 }
 
-async function remove(key: string) {
-  try { await notes.delete(key); await reload() } catch (e) { error.value = errorText(e) }
+async function del(key: string) {
+  actionError.value = ''
+  try { await remove(key) } catch (e) { actionError.value = errorText(e) }
 }
 
-function signIn() {
-  dg.signIn().catch((e) => { error.value = errorText(e) })
+function logIn() {
+  signIn().catch((e) => { actionError.value = errorText(e) })
 }
 </script>
 
@@ -32,13 +40,13 @@ function signIn() {
 
     <div v-else-if="!user" class="bar">
       <span>Sign in to keep notes.</span>
-      <button class="primary" @click="signIn">Sign in with dg</button>
+      <button class="primary" @click="logIn">Sign in with dg</button>
     </div>
 
     <template v-else>
       <div class="bar">
         <span>Signed in as {{ user.email }}</span>
-        <button @click="dg.signOut()">Sign out</button>
+        <button @click="signOut()">Sign out</button>
       </div>
 
       <form @submit.prevent="add">
@@ -50,7 +58,7 @@ function signIn() {
       <ul v-else>
         <li v-for="n in items" :key="n.key">
           <span>{{ n.data.text }}</span>
-          <button :aria-label="`Delete note: ${n.data.text}`" @click="remove(n.key)">Delete</button>
+          <button :aria-label="`Delete note: ${n.data.text}`" @click="del(n.key)">Delete</button>
         </li>
       </ul>
       <p class="live">Open this page in two tabs: a note added in one shows up in the other.</p>
