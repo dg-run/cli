@@ -9,15 +9,20 @@ npm install
 npm run dev      # the page, with hot reload
 ```
 
-dg.run provides the backend (`/_dg/*`) on **your app's own address**, so sign-in and the database work once the app is uploaded. Under `npm run dev` the page runs, but calls to the backend fail and the app shows a short error. Upload to try the real thing.
+If you answered **yes** to "Use the dg.run backend in dev mode?" when you ran `npm create dg`, `npm run dev` uses the **real backend** (sign-in, database, realtime) on a private dev sandbox in your account: your dev server proxies `/_dg/*` to it, and the link is kept in `.dg/dev.json` (git-ignored). Click **Sign in with dg**, add a note, open a second tab and watch it appear.
+
+Without dev mode the page runs but calls to the backend fail and the app shows a short error. Set it up any time with `npm run dg:sandbox`. How it works and its limits: [dev mode](https://dg.run/docs/dev-mode).
 
 ## Publish it
 
 ```bash
-npm run pack     # type-checks, builds, and writes <name>.zip
+npm run publish   # packs, then uploads the build to your dg.run account
+npm run pack      # only type-checks, builds, and writes <name>.zip
 ```
 
-Upload the zip in **My apps** on dg.run. It gets a private sandbox address to test on, and you submit it for review when you are happy. See [Getting started](https://dg.run/docs/getting-started).
+`npm run publish` shows a login link: open it, check the code and allow. The build lands in your **sandbox** (on your dev sandbox if you have one, and a later run uploads a new build of the same app). It prints a private address to test it on; the app is linked in `.dg/app.json` (git-ignored). Use `-- --new` to upload as a new app instead. Then request a review in **My apps**.
+
+Or upload the zip by hand in **My apps** on dg.run: click **Upload new build** on your dev sandbox's card (or drop it in the upload box if you have no dev sandbox). It gets a private sandbox address to test the real build on, and you request a review when you are happy. See [Start your first app](https://dg.run/docs/getting-started).
 
 ## If the build is blocked on Windows
 
@@ -33,7 +38,9 @@ On a machine without that restriction you can delete the `overrides` block and r
 | `src/notes-app.ts` | `NotesApp`: a class that owns the DOM, follows the user and keeps the notes live. |
 | `src/main.ts` | Starts it. |
 | `public/manifest.webmanifest` | App name, description and icon shown on dg.run. Edit these. |
-| `vite.config.ts` | `base: '/'`: dg.run serves each app at the root of its own address. |
+| `vite.config.ts` | `base: '/'` (dg.run serves each app at the root of its own address) and `dgDev()`, the dev proxy. |
+| `.dg/dev.json` | Links this project to your dev sandbox (made by `create-dg`, git-ignored). |
+| `.dg/app.json` | Which app `npm run publish` uploads to (made by the first upload, git-ignored). |
 | `scripts/pack.mjs` | Zips `dist/` for upload. |
 
 ## Next steps
